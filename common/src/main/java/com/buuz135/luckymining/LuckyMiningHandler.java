@@ -1,9 +1,9 @@
 package com.buuz135.luckymining;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.DustColorTransitionOptions;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
@@ -14,7 +14,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import org.joml.Vector3f;
+import net.minecraft.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,8 @@ public final class LuckyMiningHandler {
     private static final long STREAK_TIMEOUT_MILLIS = 3_000L;
     private static final int MAX_SCALING_STEPS = 10;
     private static final DustColorTransitionOptions SPREAD_PARTICLE = new DustColorTransitionOptions(
-            new Vector3f(84.0F / 255.0F, 248.0F / 255.0F, 65.0F / 255.0F),
-            new Vector3f(1.0F, 208.0F / 255.0F, 0.0F),
+            0x54F841,
+            0xFFD000,
             0.5F
     );
     private static final Map<ServerPlayer, MiningStreak> MINING_STREAKS = new WeakHashMap<>();
@@ -47,9 +47,8 @@ public final class LuckyMiningHandler {
             return;
         }
 
-        Holder<Enchantment> enchantment = level.registryAccess()
-                .registryOrThrow(Registries.ENCHANTMENT)
-                .getHolderOrThrow(LuckyMining.ENCHANTMENT);
+        Registry<Enchantment> enchantments = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        Holder<Enchantment> enchantment = enchantments.wrapAsHolder(enchantments.getValueOrThrow(LuckyMining.ENCHANTMENT));
         int enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(enchantment, player.getMainHandItem());
         if (enchantmentLevel == 0) {
             return;

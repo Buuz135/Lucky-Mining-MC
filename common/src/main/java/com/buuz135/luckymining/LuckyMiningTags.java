@@ -1,7 +1,7 @@
 package com.buuz135.luckymining;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 
@@ -14,6 +14,6 @@ public final class LuckyMiningTags {
     }
 
     private static TagKey<Block> tag(String path) {
-        return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(LuckyMining.MOD_ID, path));
+        return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(LuckyMining.MOD_ID, path));
     }
 }
