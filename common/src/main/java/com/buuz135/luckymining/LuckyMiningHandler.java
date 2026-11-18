@@ -58,7 +58,11 @@ public final class LuckyMiningHandler {
         double tierChance = LuckyMining.config().chance(enchantmentLevel);
         int scalingSteps = streak == null ? 0 : streak.scalingSteps();
         double maximumChance = Math.min(1.0, tierChance * 2.0);
-        double currentChance = Math.min(maximumChance, tierChance + scalingSteps * tierChance / 10.0);
+        double currentChance = Math.clamp(
+                tierChance + (scalingSteps + player.getLuck()) * tierChance / 10.0,
+                0.0,
+                maximumChance
+        );
         MINING_STREAKS.put(player, new MiningStreak(
                 minedState.getBlock(),
                 Math.min(MAX_SCALING_STEPS, scalingSteps + 1),
